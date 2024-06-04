@@ -1,20 +1,26 @@
 # Model
+model_name: 's3d'
 feature_type: 's3d'
-stack_size: 64 # Feature time span in fps
-step_size: 64 # Feature step size in fps
-extraction_fps: 25 # 25 is my best guess. For original video fps, leave unspecified "null" (None)
+#stack_size: 64 # Feature time span in fps
+#step_size: 64 # Feature step size in fps
+extraction_fps: null # 25 is my best guess. For original video fps, leave unspecified "null" (None)
 
 # Extraction Parameters
 device: 'cuda:0'  # device as in `torch`, can be 'cpu'
-on_extraction: 'print'  # what to do once the features are extracted. Can be ['print', 'save_numpy', 'save_pickle']
+#device: cpu
+on_extraction: 'save_numpy' # 'print'  # what to do once the features are extracted. Can be ['print', 'save_numpy', 'save_pickle']
 output_path: './output' # where to store results if saved
 tmp_path: './tmp' # folder to store the temporary files used for extraction (frames or aud files)
 keep_tmp_files: false # to keep temp files after feature extraction.
-show_pred: false # to show preds of a model, i.e. on a pre-train dataset for each feature (Kinetics 400)
+show_pred: true # to show preds of a model, i.e. on a pre-train dataset for each feature (Kinetics 400)
+#on_extraction: 'save_numpy' 
 
 # config
 config: null
 
 # Video paths
-video_paths: null
+#video_paths: 'C:\\Users\\karthik.venkat\\PycharmProjects\\video_features\\video_features\\sample\\v_ZNVhz7ctTq0.mp4'
+#video_paths: ['./sample/v_ZNVhz7ctTq0.mp4', './sample/v_GGSY1Qvo990.mp4']
+video_paths: ['C:\\Users\\karthik.venkat\\PycharmProjects\\video_anomaly_detection\\Assault007_x264.mp4', 'C:\\Users\\karthik.venkat\\PycharmProjects\\video_anomaly_detection\\Explosion001_x264.mp4']
+#video_paths: ['C:\\Users\\karthik.venkat\\PycharmProjects\\video_anomaly_detection\\Assault007_x264.mp4']
 file_with_video_paths: null # if the list of videos is large, you might put them in a txt file, use this argument to specify the path

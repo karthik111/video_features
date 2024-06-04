@@ -70,6 +70,18 @@ def form_slices(size: int, stack_size: int, step_size: int) -> list((int, int)):
         slices.append((start_idx, end_idx))
     return slices
 
+def form_slices_32(size: int, stack_size: int, step_size: int) -> list((int, int)):
+    '''print(form_slices(100, 15, 15) - example'''
+    slices = []
+    # calc how many full stacks can be formed out of framepaths
+    full_stack_num = 32 # (size - stack_size) // step_size + 1
+    for i in range(full_stack_num):
+        start_idx = i * step_size
+        end_idx = start_idx + stack_size
+        if i == full_stack_num-1:
+            end_idx = size
+        slices.append((start_idx, end_idx))
+    return slices
 
 def sanity_check(args: Union[argparse.Namespace, DictConfig]):
     '''Checks user arguments.
@@ -124,6 +136,7 @@ def sanity_check(args: Union[argparse.Namespace, DictConfig]):
         # may add `finetuned_on` item
     real_output_path = args.output_path
     real_tmp_path = args.tmp_path
+    print("subs", subs, real_output_path, real_tmp_path)
     for p in subs:
         # some model use `/` e.g. ViT-B/16
         real_output_path = os.path.join(real_output_path, p.replace("/", "_"))

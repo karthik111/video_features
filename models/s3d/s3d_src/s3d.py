@@ -34,9 +34,14 @@ class S3D(nn.Module):
 
     def forward(self, x, features=False):
         # (B, 1024, 8, 7, 7) <-
+        #print("X: ", x.shape, x.size(2))
         y = self.base(x)
         # (B, 1024, 7, 1, 1)
-        y = F.avg_pool3d(y, (2, y.size(3), y.size(4)), stride=1)
+        #print("Y: ", y.shape, y.size(2))
+        if (y.size(2) < 2):
+            y = F.avg_pool3d(y, (1, y.size(3), y.size(4)), stride=1)
+        else:
+            y = F.avg_pool3d(y, (2, y.size(3), y.size(4)), stride=1)
         if not features:
             # (B, 400, 7, 1, 1) <- (B, 1024, 7, 1, 1)
             y = self.fc(y)

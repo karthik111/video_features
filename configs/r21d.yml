@@ -17,5 +17,6 @@ show_pred: false # to show preds of a model, i.e. on a pre-train dataset for eac
 config: null
 
 # Video paths
-video_paths: null
+#video_paths: "C:\Users\karthik.venkat\PycharmProjects\video_features\video_features\sample\v_ZNVhz7ctTq0.mp4"
+video_paths: './sample/v_ZNVhz7ctTq0.mp4'
 file_with_video_paths: null # if the list of videos is large, you might put them in a txt file, use this argument to specify the path
