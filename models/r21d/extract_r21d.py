@@ -66,6 +66,7 @@ class ExtractR21D(BaseExtractor):
         """
         # take the video, change fps and save to the tmp folder
         if self.extraction_fps is not None:
+            print('video_path:', video_path)
             video_path = reencode_video_with_diff_fps(video_path, self.tmp_path, self.extraction_fps)
 
         # read a video
