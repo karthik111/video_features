@@ -9,7 +9,11 @@ from models.s3d.s3d_src.s3d import S3D
 from models.transforms import CenterCrop, Resize, ToFloatTensorInZeroOne
 from torchvision.io.video import read_video
 from utils.io import reencode_video_with_diff_fps
+
 from utils.utils import form_slices, show_predictions_on_dataset, form_slices_32
+import configparser
+import os
+
 
 class ExtractS3D(BaseExtractor):
 
@@ -36,7 +40,7 @@ class ExtractS3D(BaseExtractor):
         ])
         self.show_pred = args.show_pred
         self.output_feat_keys = [self.feature_type]
-        self.name2module = self.load_model()
+        self.name2module = self.load_model
 
     def augment_rgb_frame(self, rgb, start_idx, end_idx):
         # Select frames from start_idx to end_idx (inclusive) along the frame dimension
@@ -119,7 +123,11 @@ class ExtractS3D(BaseExtractor):
         Returns:
             Dict[str, torch.nn.Module]: model-agnostic dict holding modules for extraction and show_pred
         """
-        s3d_kinetics400_weights_torch_path = './models/s3d/checkpoint/S3D_kinetics400_torchified.pt'
+        config = configparser.ConfigParser(interpolation=configparser.BasicInterpolation())
+        config.read('config.ini')
+        model_location = config.get('default', 'feature_extractor_model_location')
+        s3d_kinetics400_weights_torch_path = os.path.join(model_location, 's3d/checkpoint/S3D_kinetics400_torchified.pt')
+        #s3d_kinetics400_weights_torch_path = './models/s3d/checkpoint/S3D_kinetics400_torchified.pt'
         model = S3D(num_class=400, ckpt_path=s3d_kinetics400_weights_torch_path)
         model = model.to(self.device)
         model.eval()

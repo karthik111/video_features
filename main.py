@@ -51,5 +51,7 @@ def main(args_cli):
 
 
 if __name__ == '__main__':
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
     args_cli = OmegaConf.from_cli()
     main(args_cli)
