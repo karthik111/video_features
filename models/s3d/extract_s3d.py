@@ -40,7 +40,7 @@ class ExtractS3D(BaseExtractor):
         ])
         self.show_pred = args.show_pred
         self.output_feat_keys = [self.feature_type]
-        self.name2module = self.load_model
+        self.name2module = self.load_model()
 
     def augment_rgb_frame(self, rgb, start_idx, end_idx):
         # Select frames from start_idx to end_idx (inclusive) along the frame dimension
@@ -95,13 +95,24 @@ class ExtractS3D(BaseExtractor):
 
         for stack_idx, (start_idx, end_idx) in enumerate(slices):
             # inference
-            rgb_stack = rgb[:, :, start_idx:end_idx, :, :].to(self.device)
+            rgb_stack = rgb[:, :, start_idx:end_idx, :, :]
 
             # below is to creates a duplicate frame for each frame for data augmentation and to
             # avoid errors with too small stack sizes
             # Select frames from start_idx to end_idx (inclusive) along the frame dimension
             if (end_idx - start_idx < 10):
                 rgb_stack = self.augment_rgb_frame(rgb, start_idx, end_idx)
+
+
+            print(rgb_stack.shape)
+            print(rgb_stack.device)
+            print(self.device)
+            torch.no_grad()
+            print(rgb_stack.dtype)
+            #torch.cuda.empty_cache()
+            print(torch.cuda.memory_summary())
+
+            rgb_stack = rgb_stack.to(self.device)
 
             output = self.name2module['model'](rgb_stack, features=True)
             vid_feats.extend(output.tolist())
@@ -110,7 +121,9 @@ class ExtractS3D(BaseExtractor):
         feats_dict = {
             self.feature_type: np.array(vid_feats),
         }
-
+        
+        del rgb_stack
+        torch.cuda.empty_cache()
         return feats_dict
 
 
