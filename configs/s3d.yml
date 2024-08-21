@@ -1,8 +1,8 @@
 # Model
 model_name: 's3d'
 feature_type: 's3d'
-#stack_size: 64 # Feature time span in fps
-#step_size: 64 # Feature step size in fps
+stack_size: 64 # Feature time span in fps
+step_size: 64 # Feature step size in fps
 extraction_fps: null # 25 is my best guess. For original video fps, leave unspecified "null" (None)
 
 # Extraction Parameters
